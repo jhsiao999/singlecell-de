@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Evaluated methods</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">singlecell-de</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Evaluated methods</h1>
+
+</div>
+
+
+<p><strong>Last updated:</strong> 2017-10-19</p>
+<p><strong>Code version:</strong> 861184a54d0981caa0791fd3a31ddee6995fa00b</p>
+<hr />
+<div id="differential-expression-methods" class="section level2">
+<h2>Differential expression methods</h2>
+<p>We evaluated the methods that have been described in peer-reviewed papers. This list does not include Monocole and Seurat (which are included in Sonesen and Robinson 2017).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Bulk RNA-seq</th>
+<th>Model Input</th>
+<th>Default normalization</th>
+<th>Pseudo-count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>edgeR</td>
+<td>Count</td>
+<td>Weighted trimmed mean of M-values (TMM)</td>
+<td>None</td>
+</tr>
+<tr class="even">
+<td>DESeq2</td>
+<td>Count</td>
+<td>Median ratio (MR)</td>
+<td>None</td>
+</tr>
+<tr class="odd">
+<td>limmaVoom</td>
+<td>log2 counts</td>
+<td>Counts per million (CPM)</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>Single-cell</th>
+<th>Model Input</th>
+<th>Default normalization</th>
+<th>Pseudo-count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BPSC</td>
+<td>Count</td>
+<td>CPM or FPKM recommended</td>
+<td>None</td>
+</tr>
+<tr class="even">
+<td>MAST</td>
+<td>log2 counts</td>
+<td>CPM recommended</td>
+<td>Adaptive thresholding</td>
+</tr>
+<tr class="odd">
+<td>ROTS</td>
+<td>Count</td>
+<td>Normalization recommended</td>
+<td>None</td>
+</tr>
+<tr class="even">
+<td>SCDE</td>
+<td>Count</td>
+<td>RPM recommended</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<ol style="list-style-type: decimal">
+<li><p>D3E may need to be included later. It’s a python-based software.</p></li>
+<li><p>limmaVoom is the only method that explicity applies pseudo-count. MAST is another log-count based method, which models expression as a two-part process generating “non-drop-outs” and “drop-outs” - the cutoff is decided arbitrarily.</p></li>
+</ol>
+</div>
+<div id="experimental-design" class="section level2">
+<h2>Experimental design</h2>
+<p>Extracted from: <a href="https://github.com/hms-dbmi/scw/blob/d57755ca045260e9368540850854dd11ef2fa834/scw2016/tutorials/batcheffects/Hicks.Rmd" class="uri">https://github.com/hms-dbmi/scw/blob/d57755ca045260e9368540850854dd11ef2fa834/scw2016/tutorials/batcheffects/Hicks.Rmd</a></p>
+<p>Potential limiting factors in experimental design</p>
+<ol style="list-style-type: decimal">
+<li>Protocols to isolate cells</li>
+<li>Protocols to extract mRNA from isolated cells</li>
+<li>Protocols for extracting RNA from isolated cells and convert to cDNA</li>
+<li>Choice of sequencing platform, time and budge</li>
+<li>Choice to use spike-in controls or unique molecular identifiers
+<ul>
+<li>Spike-ins sometimes can take a large percentage of “read landscape” in sequencing</li>
+<li>UMIs can remove amplification bias, but are 5’ or 3’ end bias and hence can’t be used for isoform or allele-specific expression</li>
+</ul></li>
+</ol>
+</div>
+<div id="normalization-methods" class="section level2">
+<h2>Normalization methods</h2>
+<p>A. Bulk RNA-seq literature in the past decade has established the need for</p>
+<ol style="list-style-type: decimal">
+<li><p>Within-sample normalization to adjust for GC content and transcript length,</p></li>
+<li><p>Between-sample normalization to adjust for differences in sampling depth</p></li>
+</ol>
+<p>B. The bulk RNA-seq normalization methods don’t work so well for single-cell RNA-seq data (?), especially for datasets with many zeros and also with data with highly variable genes (there’s this paper that says that bulk normalization methods don’t work well when there are a lot of DE genes, which one?).</p>
+<p>C. The single-cell protocols can be described in these general steps: 1. Cell lysis 2. Reverse transcription 3. PCR amplification 4. Dilution</p>
+<p>D. In terms of protocol, does single cell protocol introduce additional sources of variation? Perhaps, it is inherent cell-to-cell variation in total mRNA content?</p>
+<p>E. Description of existing methods</p>
+<p>Between-sample normalization</p>
+<table>
+<thead>
+<tr class="header">
+<th>Evaluated methods</th>
+<th>Typical use for</th>
+<th>Spike-in control</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Counts-per-million</td>
+<td>bulk RNA-seq</td>
+<td>NA</td>
+</tr>
+<tr class="even">
+<td>TMM</td>
+<td>bulk RNA-seq</td>
+<td>NA</td>
+</tr>
+<tr class="odd">
+<td>RLE (DESeq)</td>
+<td>bulk RNA-seq</td>
+<td>NA</td>
+</tr>
+<tr class="even">
+<td>SCnorm</td>
+<td>single-cell RNA-seq</td>
+<td>Not required, but included an option.</td>
+</tr>
+<tr class="odd">
+<td>Scran</td>
+<td>single-cell RNA-seq</td>
+<td>Not required, but included an option.</td>
+</tr>
+<tr class="even">
+<td>BASiCs</td>
+<td>single-cell RNA-seq</td>
+<td>Required</td>
+</tr>
+<tr class="odd">
+<td>Census</td>
+<td>single-cell RNA-seq</td>
+<td>Not required, but included an option.</td>
+</tr>
+</tbody>
+</table>
+<p>Within-sample normalization</p>
+<table>
+<thead>
+<tr class="header">
+<th>Evaluted methods</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>TPM</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>FPKM</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>RPKM</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Notes.</p>
+<ol style="list-style-type: decimal">
+<li><p>The first step in analyzing CPM - adjust for between sample differences in library size TMM, MR : adjust for variation in library size due to differences in gene expression distribution</p></li>
+<li><p>SCnorm : count-read relationship within each biological condition, then normalize again across the two conditions using a different procedure (see function scaleNormMultCont)</p></li>
+<li><p>RLE: this method requires the imputation of pseudocount.</p></li>
+<li><p>scran: this method has an option for large cell size. In this case, cells are clustered and cells with similar gene expression profiles are clustered together forming a pseudo-cell for computing library size normalization factor.</p></li>
+</ol>
+<ul>
+<li><strong>Some questions to ask</strong>:</li>
+</ul>
+<ol style="list-style-type: lower-alpha">
+<li>Which methods work with TPM and which work with CPM?</li>
+<li>Can we get TPM with UMI data?? Well no because we don’t get complete transcripts… so can’t do TPM for UMI data. UMI is not recommened in consensus and SCnorm. (How about scran?) Hence spike-in is recommended in both SCnorm and census…</li>
+<li>Correlation between transcript count and UMI count? correlation between 5’UTR region length or start position and UMI count?? How about other known factors that affect expression variation within sample and between genes?</li>
+<li>How do these methods deal with zeros when computing the scale factors?</li>
+<li>How do we evaluate normalization methods? Perhaps some of these new single-cell normalization methods work as well for thinned GTEx data, implying that it’s a low coverage issue…</li>
+</ol>
+<p>About FPKM, RPKM and TPM: “These methods are not applicable to our dataset since the end of the transcript which contains the UMI was preferentially sequenced. Furthermore in general these should only be calculated using appropriate quantification software from aligned BAM files not from read counts since often only a portion of the entire gene/transcript is sequenced, not the entire length. If in doubt check for a relationship between gene/transcript length and expression level.” (extracted from hemberg-lab.github.io)</p>
+<p>F. Implementation details</p>
+<ol style="list-style-type: decimal">
+<li>edgeR:
+<ol style="list-style-type: lower-alpha">
+<li>libsize &lt;- libsize*libsize_factor</li>
+<li>y &lt;- t(log2(t(counts + 0.5)/(lib.size + 1) * 1e+06)) the default is to compute the normalized counts (cpm) using a library-size adjusted prior count</li>
+<li>only output the size factor</li>
+</ol></li>
+<li>scran
+<ol style="list-style-type: lower-alpha">
+<li>So many bells and wissles in these methods… difficult to replicate the results outside of the package… even if the implementation is not model-based…</li>
+<li>one thing I can be sure is that the normalized expression variables is computed the same as in edgeR, but with a different prior.count (possibly also library size adjusted as in edgeR) and its own library size normalization factor</li>
+<li>since it’s a scaling method, I chose to output just the size factor…</li>
+</ol></li>
+<li>Other practical concerns:
+<ol style="list-style-type: lower-alpha">
+<li>I prefer to not use the normalized expression outputted from each method, since I haven’t been able to locate the code for computing the normalized counts.</li>
+<li>Goal is to get size factors and then compare these scale factors. The only methods that have different scale factors between genes is SCnorm and perhaps BASiCs (?).</li>
+<li>Note that SCnorm, Scran, BASiCs and Census all provide tools for computing size factors using spike-in control genes. In my implementation, I ignore the spike-in option.</li>
+<li>For census, can we recover normalized count outputted by census using its size facrors? that is, are the scale factors same for every gene? Or maybe they estimated size factors to be the same for every gene afterwards.</li>
+</ol></li>
+</ol>
+</div>
+<div id="filtering-and-qc" class="section level2">
+<h2>Filtering and QC</h2>
+<p>I like Po’s model-based approach to filtering. This has not been done yet in the literature…</p>
+<p>Many things that can be done… but for now, I’ll use the simple rule of including samples/features detected as expressed. At least to keep the filtering criteria consistent across datasets and evaluated methods.</p>
+<p>A. Feature-level</p>
+<p>Genes expressed in at least X percent of cells</p>
+<p>For UMI data, should we correct for collison?</p>
+<p>B. Sample-level</p>
+<p>Gene expression range as expected by the range of ERCC - within-sample variation is expected to be the same between endogeneous genes and ERCC genes</p>
+<p>Can we use spike-in variation to predict endogeneous gene variation?</p>
+<p>Percent features expressed in spike-in is greater than percent features expressed in endogeneous</p>
+<p>what if no spike-in? between-feature variation?</p>
+<p>cell variation and coverage?</p>
+<p>proportion of genes experssed</p>
+<p>total mRNA recovery - library size</p>
+<p>C. Existing QC pipelines</p>
+<p>scater</p>
+</div>
+<div id="pseudo-count" class="section level2">
+<h2>Pseudo-count</h2>
+<p>edgeR uses a moderated prior count (moderated because it’s depended on library size)</p>
+<p>in voom/edgeR/limma, pseudocount is added after normalizing sample depth</p>
+</div>
+
+<hr>
+<p>
+    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+</p>
+<hr>
+
+<!-- To enable disqus, uncomment the section below and provide your disqus_shortname -->
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+-->
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

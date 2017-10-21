@@ -1,0 +1,125 @@
+---
+title: "Preprocess and prepare data for simulation"
+output: html_document
+---
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
+
+```{r, echo = FALSE}
+knitr::read_chunk("chunks.r")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+---
+
+## Background and objectives
+
+Preprocess data for simulation
+
+1. Remove spike-in control genes.  
+2. Remove genes and samples with zero count.  
+3. Remove mitochrodrial genes.
+
+---
+
+## MouseZeiselBrain
+
+```{r, eval = FALSE}
+library(singleCellRNASeqMouseZeiselBrain)
+eset <- get(data(MouseZeiselBrain))
+ngenes <- nrow(eset)
+nsamples <- ncol(eset)
+
+# remove genes/samples with zero count
+ii_genes_allzero <- rowSums(exprs(eset) == 0) == ngenes
+ii_samples_allzero <- colSums(exprs(eset) == 0) == nsamples
+table(ii_genes_allzero)
+table(ii_samples_allzero)
+
+# remove spike-in control genes
+which_genes_control <- grep("ERCC", rownames(exprs(eset)))
+
+# remove mitochrondrial genes
+mito <- readRDS("../data/mitogenes.mouse.rds")
+which_notmito <- which(!(rownames(exprs(eset)) %in% as.character(mito$Symbol)))
+
+# make filtered dataset
+eset_filtered <- eset[which_notmito, ]
+
+# save to rds
+saveRDS(exprs(eset_filtered), 
+        file = "../data/mousezeiselbrain.rds")
+```
+
+## MouseKleinESC
+
+```{r, eval = FALSE}
+library(singleCellRNASeqMouseKleinESC)
+eset <- get(data(MouseKleinESC))
+ngenes <- nrow(eset)
+nsamples <- ncol(eset)
+
+# remove genes/samples with zero count
+ii_genes_allzero <- rowSums(exprs(eset) == 0) == ngenes
+ii_samples_allzero <- colSums(exprs(eset) == 0) == nsamples
+table(ii_genes_allzero)
+table(ii_samples_allzero)
+
+# remove spike-in control genes
+which_genes_control <- grep("ERCC", rownames(exprs(eset)))
+
+# remove mitochrondrial genes
+mito <- readRDS("../data/mitogenes.mouse.rds")
+which_notmito <- which(!(rownames(exprs(eset)) %in% as.character(mito$Symbol)))
+
+# make filtered dataset
+eset_filtered <- eset[which_notmito, ]
+
+# save to rds
+saveRDS(exprs(eset_filtered), 
+        file = "../data/mousekleinesc.rds")
+```
+
+
+## HumanTungiPSC
+
+```{r, eval = FALSE}
+library(singleCellRNASeqHumanTungiPSC)
+eset <- get(data(HumanTungiPSC))
+ngenes <- nrow(eset)
+nsamples <- ncol(eset)
+
+# remove genes/samples with zero count
+ii_genes_allzero <- rowSums(exprs(eset) == 0) == ngenes
+ii_samples_allzero <- colSums(exprs(eset) == 0) == nsamples
+table(ii_genes_allzero)
+table(ii_samples_allzero)
+
+# remove spike-in control genes
+which_genes_notcontrol <- grep("ERCC", rownames(exprs(eset)), invert = TRUE)
+
+# remove mitochrondrial genes
+mito <- readRDS("../data/mitogenes.human.rds")
+which_notmito <- which(!(rownames(exprs(eset)) %in% as.character(mito$Symbol)))
+
+# make filtered dataset
+eset_filtered <- eset[unique(which_genes_notcontrol, which_notmito), ]
+
+# save to rds
+saveRDS(exprs(eset_filtered), 
+        file = "../data/humantungipsc.rds")
+```
+
+
+---
+
+## Session information
+
+```{r, echo = FALSE}
+sessionInfo()
+```
+

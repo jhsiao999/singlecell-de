@@ -1,0 +1,48 @@
+---
+title: "Analysis"
+output: html_document
+---
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
+
+---
+
+Here's a rough outline of the project aims. Will be updated as the project goes...
+
+
+**Aim 1**: Establish similarities and differences in practical considerations for the analysis of single-cell and bulk RNA-seq expression count.
+
+a) Overdispersion (variance-mean dependency)
+
+b) Sparsity: technical artifact or biological reality?
+
+
+**Aim 2**: Evaluate performances of DE methods.
+
+a) Is it a coverage issue? Investigate bulk method's performance on single-cell data versus thinned data.
+
+b) Lowly versus highly expressed genes?
+
+c) Pseudo-count and filtering
+
+d) Low versus high variation? 
+
+e) Sample size
+
+**Aim 3**: Tailor normalization/DE for single-cell RNA-seq data?
+
+a) UMI versus non-UMI
+
+b) Sparsity/levels of expression
+
+
+
+
+
+
+
+
+
+

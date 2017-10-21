@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Evaluation criteria</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">singlecell-de</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Evaluation criteria</h1>
+
+</div>
+
+
+<p><strong>Last updated:</strong> 2017-10-19</p>
+<p><strong>Code version:</strong> 861184a54d0981caa0791fd3a31ddee6995fa00b</p>
+<hr />
+<div id="how-to-evaluate-the-performance-of-different-methods" class="section level2">
+<h2>How to evaluate the performance of different methods?</h2>
+<p>normalization:</p>
+<p>global adjustment: observed variability in global properties is due to techncial reasons and are unrelated to the biology of the system under study. examples of global properties include differences in the toal, upper quartile, or median gene expression, proportion of differentially expressed genes, observed variance across expression levels and statistical distribution across samples (excerpt from Hicks et al. 2017 introduction paragraph 1)</p>
+<p>issue with single-cell data, given two cell clusters, there’s significant variability between cells that are part due to the biological system under study and part due to techncial artificats, hence the methods that focus on global adjustment often do not work well? recently, some methods are proposed to perfrom local adjustment: normalizing within cell groups or normalizing with gene groups.</p>
+<p>local adjustment</p>
+<p>differential testing: power of the methods</p>
+</div>
+<div id="evaluation-criteria" class="section level2">
+<h2>Evaluation criteria</h2>
+<p>We focus on calibration and power when comparing performances of the different methods.</p>
+<div id="calibrarion" class="section level3">
+<h3>Calibrarion</h3>
+<p>We say that a method is well-calibrated if for all genes identified as significant at a given cut-off, most of the genes are true effects. Take s-value for an example, of all genes assigned a s-value &lt; .05, we would expect that 95 percent of the genes are truly differently expressed and correctly signed. Take q-value for an example, of all genes assigned a q-value &lt; .05, we would expect that 95% of the genes are truly differently expressed (though not necessary correctly signed) in a well-calibrated method.</p>
+</div>
+<div id="power" class="section level3">
+<h3>Power</h3>
+<p>We say that a method performs well in power if the method is able to differentiate between null and non-null genes (in datasets that contain both null and non-null genes). Generally speaking, a method that performs in power returns more significant calls among non-null genes than among null genes.</p>
+<p>The common approach to evaluate power is computing area under the curve of sensitivty versus specificity (ROC curve). In a ROC curve, the true positive rate (sensitivity) is plotted as a function of the false positive rate (1-specificity). We say tht a method is well-performed if true positive rate is consistently higher than false positive rate at different thresholds of false positive rate.</p>
+<p>Below I make a simulation data to demonstrate the calculations of true positive rate and false positive rate.</p>
+<pre class="r"><code>library(ashbun)
+
+# load iPSC raw counts
+library(singleCellRNASeqHumanTungiPSC)</code></pre>
+<pre><code>Loading required package: Biobase</code></pre>
+<pre><code>Loading required package: BiocGenerics</code></pre>
+<pre><code>Loading required package: parallel</code></pre>
+<pre><code>
+Attaching package: &#39;BiocGenerics&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:parallel&#39;:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    IQR, mad, sd, var, xtabs</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    anyDuplicated, append, as.data.frame, cbind, colMeans,
+    colnames, colSums, do.call, duplicated, eval, evalq, Filter,
+    Find, get, grep, grepl, intersect, is.unsorted, lapply,
+    lengths, Map, mapply, match, mget, order, paste, pmax,
+    pmax.int, pmin, pmin.int, Position, rank, rbind, Reduce,
+    rowMeans, rownames, rowSums, sapply, setdiff, sort, table,
+    tapply, union, unique, unsplit, which, which.max, which.min</code></pre>
+<pre><code>Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    &#39;browseVignettes()&#39;. To cite Bioconductor, see
+    &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.</code></pre>
+<pre class="r"><code>data &lt;- get(data(&quot;HumanTungiPSC&quot;))
+data_sub &lt;- exprs(data)[,pData(data)$individual == &quot;NA19239&quot;]
+
+# generate a simulated data with bignormal prior
+set.seed(999)
+simdata_list &lt;- simulationWrapper(data_sub, Nsim = 1,
+                                  Ngenes = 500,
+                                  Nsamples = 30,
+                                  sample_method = &quot;all_genes&quot;,
+                                  pi0 = .5,
+                                  beta_args = args.big_normal(betapi = 1,
+                                                              betamu = 0, betasd = .8))
+
+# fitting limmaVoom 
+results.limmaVoom &lt;- ashbun::methodWrapper.limmaVoom(counts = simdata_list[[1]]$counts, 
+                                                     condition = simdata_list[[1]]$condition)</code></pre>
+<pre><code>Warning: package &#39;limma&#39; was built under R version 3.4.2</code></pre>
+<pre class="r"><code># fitting ash
+library(ashr)
+results.limmaVoomAsh &lt;- ash(results.limmaVoom$betahat,
+                            results.limmaVoom$sebetahat)
+
+# compute ROC curve
+roc.data &lt;- data.frame(nonnull = 1- simdata_list[[1]]$is_nullgene, 
+                       pvalue.limmaVoom = results.limmaVoom$pvalue,
+                       lfsr.limmaVoomAsh = results.limmaVoomAsh$result$lfsr)
+
+# true positive rate and false positive rate
+roc.data_limmaVoom &lt;- 
+  data.frame(method = &quot;limmaVoom&quot;,
+             cutoff = quantile(roc.data$pvalue.limmaVoom, prob = c(.1, .3, .5, .7, .9)))
+for (index in 1:length(roc.data_limmaVoom$cutoff)) {
+  cutoff &lt;- roc.data_limmaVoom$cutoff[index]
+  roc.data_limmaVoom$sensitivity[index] &lt;- 
+    with(roc.data, sum(nonnull == 1 &amp; pvalue.limmaVoom &lt; cutoff)/sum(pvalue.limmaVoom &lt; cutoff))
+  roc.data_limmaVoom$specificity[index] &lt;- 
+    with(roc.data, sum(nonnull == 0 &amp; pvalue.limmaVoom &gt; cutoff)/sum(pvalue.limmaVoom &gt; cutoff))
+}
+
+roc.data_limmaVoomAsh &lt;- 
+  data.frame(method = &quot;limmaVoomAsh&quot;,
+             cutoff = quantile(roc.data$lfsr.limmaVoomAsh, prob = c(.1, .3, .5, .7, .9)))
+for (index in 1:length(roc.data_limmaVoomAsh$cutoff)) {
+  cutoff &lt;- roc.data_limmaVoomAsh$cutoff[index]
+  roc.data_limmaVoomAsh$sensitivity[index] &lt;- 
+    with(roc.data, sum(nonnull == 1 &amp; lfsr.limmaVoomAsh &lt; cutoff)/sum(lfsr.limmaVoomAsh &lt; cutoff))
+  roc.data_limmaVoomAsh$specificity[index] &lt;- 
+    with(roc.data, sum(nonnull == 0 &amp; lfsr.limmaVoomAsh &gt; cutoff)/sum(lfsr.limmaVoomAsh &gt; cutoff))
+}
+
+library(ggplot2)
+roc.plot &lt;- rbind(roc.data_limmaVoom, roc.data_limmaVoomAsh)
+ggplot(roc.plot, aes(x = 1- specificity,
+                     y = sensitivity, col = method)) + geom_line() </code></pre>
+<p><img src="figure/benchmark-criteria.Rmd/power-example-manual-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The above plot is based on 5 cutoffs of specificity and covers only a narrow range of the relationships between true positive rate and false positive rate (1-specificity). pROC package provides a convenient function to compute true positive rate as a function of false positive rate between the values of 0 to 1.</p>
+<p>Interpretation: First, we observe that the results are well above chance occurrence - that is, the two lines are above the line wherein sensitivity equals 1-specificity, indicating that the number of true/false cases are above the same in significant and non-significant calls and hence the data is not well suited for method performance evaluation. Second, we focus on the low value range of 1-specificity - for example, at false positive rate of .25 (among non-significant calls, 25% are wrongly called as significant), true positive rate is slightly above .5 for both methods.</p>
+<pre class="r"><code>roc.pROC_limmaVoom &lt;- pROC::roc(response = roc.data$nonnull, 
+                                predictor = roc.data$pvalue.limmaVoom)
+roc.pROC_limmaVoomAsh &lt;- pROC::roc(response = roc.data$nonnull, 
+                                   predictor = roc.data$lfsr.limmaVoomAsh)
+
+roc.plot_pROC &lt;- rbind(
+  data.frame(method = &quot;limmaVoom&quot;,
+             sensitivity = roc.pROC_limmaVoom$sensitivities,
+             specificity = roc.pROC_limmaVoom$specificities),
+  data.frame(method = &quot;limmaVoomAsh&quot;,
+           sensitivity = roc.pROC_limmaVoomAsh$sensitivities,
+           specificity = roc.pROC_limmaVoomAsh$specificities) )
+
+library(ggplot2)
+ggplot(roc.plot_pROC, aes(x = 1- specificity,
+                     y = sensitivity, col = method)) + geom_line() </code></pre>
+<p><img src="figure/benchmark-criteria.Rmd/power-example-pROC-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>List the value of true positive rate at false positive rate of .05.</p>
+<pre class="r"><code>foo &lt;- subset(roc.plot_pROC, sensitivity &lt; .05)
+foo[order(foo$sensitivity, decreasing = TRUE), ]</code></pre>
+<pre><code>           method sensitivity specificity
+489     limmaVoom 0.046218487           1
+989  limmaVoomAsh 0.046218487           1
+490     limmaVoom 0.042016807           1
+990  limmaVoomAsh 0.042016807           1
+491     limmaVoom 0.037815126           1
+991  limmaVoomAsh 0.037815126           1
+492     limmaVoom 0.033613445           1
+992  limmaVoomAsh 0.033613445           1
+493     limmaVoom 0.029411765           1
+993  limmaVoomAsh 0.029411765           1
+494     limmaVoom 0.025210084           1
+994  limmaVoomAsh 0.025210084           1
+495     limmaVoom 0.021008403           1
+995  limmaVoomAsh 0.021008403           1
+496     limmaVoom 0.016806723           1
+996  limmaVoomAsh 0.016806723           1
+497     limmaVoom 0.012605042           1
+997  limmaVoomAsh 0.012605042           1
+498     limmaVoom 0.008403361           1
+998  limmaVoomAsh 0.008403361           1
+499     limmaVoom 0.004201681           1
+999  limmaVoomAsh 0.004201681           1
+500     limmaVoom 0.000000000           1
+1000 limmaVoomAsh 0.000000000           1</code></pre>
+</div>
+</div>
+
+<hr>
+<p>
+    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+</p>
+<hr>
+
+<!-- To enable disqus, uncomment the section below and provide your disqus_shortname -->
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+-->
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
