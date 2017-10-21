@@ -16,11 +16,46 @@ for (i in seq_along(args)) {
   cat(sprintf("Argument %d: %s", i, args[i]), sep = "\n")
 }
 
-cat(5)
 
 #dataset <- args[1]
 #dir_output <- args[2]
 
-#data <- readRDS(as.character(args[1]))
+# manually set 20 simulated datsets
+Nsim <- 20
 
-#print(args[1])
+
+# call libraries
+library(ashbun)
+
+data <- readRDS(args[1])
+
+for (sam_method in c("all_genes", "per_gene")) {
+  for (pi0 in c(.5, .9)) {
+    for (Nsam in c(50)) {
+
+    # make data labels
+    data_name <- strsplit( basename(args[1]), split = ".", fix = TRUE)[[1]][1]
+    pi0_lab <- paste0("pi0", pi0*10)
+    Nsamples_lab <- paste0("n", Nsam)
+
+    tmp <- strsplit(sam_method, split = "_")[[1]]
+    sam_label <- paste0(tmp[1],tmp[2])
+
+    message(cat( data_name, ",", sam_label, ",",
+               "pi0=", pi0, ",", Nsam, "samples/condition", "\n"))
+
+    # simulate data
+    simdata <- simulationWrapper(data, Nsim = Nsim, Ngenes = 1000,
+                                Nsamples = Nsam, sample_method = sam_method,
+                                pi0 = pi0,
+                                beta_args = args.big_normal(betapi = 1,
+                                                            betamu = 0,
+                                                            betasd = .8))
+
+
+    saveRDS(simdata,
+      file = paste0(args[2], data_name, "/", data_name,".", sam_label, ".",
+                    pi0_lab, ".", Nsamples_lab, ".bignormal.data.rds"))
+    }
+   }
+ }

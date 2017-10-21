@@ -8,6 +8,9 @@ library(singleCellRNASeqMouseZeiselBrain)
 |        |-- mousezeiselbrain.rds
 |        |-- humantungipsc.rds
 |        |-- mousekleinesc.rds
+|        |-- gtex001.rds: liver samples with thinning paramter .001
+|        |-- gtex01.rds: liver samples with thinning paramter .01
+|        |-- gtex.rds: liver samples
 |   |-- output_eval/
 |       |-- mousezeiselbrain/
 |           |-- mousezeiselbrain.allgenes.pi05.n50.bignormal.output.rds
@@ -24,26 +27,65 @@ library(singleCellRNASeqMouseZeiselBrain)
 |           |-- mousekleinesc.allgenes.pi09.n50.bignormal.output.rds
 |           |-- mousekleinesc.pergene.pi05.n50.bignormal.output.rds
 |           |-- mousekleinesc.pergene.pi09.n50.bignormal.output.rds
+|       |-- gtex001/
+|           |-- gtex001.allgenes.pi05.n50.bignormal.output.rds
+|           |-- gtex001.allgenes.pi09.n50.bignormal.output.rds
+|           |-- gtex001.pergene.pi05.n50.bignormal.output.rds
+|           |-- gtex001.pergene.pi09.n50.bignormal.output.rds
+|   |-- output_rocavg/
+|       |-- mousezeiselbrain/
+|           |-- mousezeiselbrain.allgenes.pi05.n50.bignormal.rocavg.rds
+|           |-- mousezeiselbrain.allgenes.pi09.n50.bignormal.rocavg.rds
+|           |-- mousezeiselbrain.pergene.pi05.n50.bignormal.rocavg.rds
+|           |-- mousezeiselbrain.pergene.pi09.n50.bignormal.rocavg.rds
+|       |-- humantungipsc/
+|           |-- humantungipsc.allgenes.pi05.n50.bignormal.rocavg.rds
+|           |-- humantungipsc.allgenes.pi09.n50.bignormal.rocavg.rds
+|           |-- humantungipsc.pergene.pi05.n50.bignormal.rocavg.rds
+|           |-- humantungipsc.pergene.pi09.n50.bignormal.rocavg.rds
+|       |-- mousekleinesc/
+|           |-- mousekleinesc.allgenes.pi05.n50.bignormal.rocavg.rds
+|           |-- mousekleinesc.allgenes.pi09.n50.bignormal.rocavg.rds
+|           |-- mousekleinesc.pergene.pi05.n50.bignormal.rocavg.rds
+|           |-- mousekleinesc.pergene.pi09.n50.bignormal.rocavg.rds
+|       |-- gtex.001/
+|           |-- gtex.001.allgenes.pi05.n50.bignormal.rocavg.rds
+|           |-- gtex.001.allgenes.pi09.n50.bignormal.rocavg.rds
+|           |-- gtex.001.pergene.pi05.n50.bignormal.rocavg.rds
+|           |-- gtex.001.pergene.pi09.n50.bignormal.rocavg.rds
+
 
 
 # ---- Make simulated data and save in
 |-- /scratch/midway2/joycehsiao/singlecell-de
-|   |-- simulated_data/
+|   |-- data_n50/
+|       |-- filter01/
+|           |-- mousezeiselbrain.n50.filter01.rds
+|           |-- humantungipsc.n50.filter01.rds
+|           |-- mousekleinesc.n50.filter01.rds
+|           |-- gtex001.n50.filter01.rds
+|   |-- data_n50_filter01_simulated/
 |       |-- mousezeiselbrain/
-|           |-- mousezeiselbrain.allgenes.pi05.n50.bignormal.data.rds
-|           |-- mousezeiselbrain.allgenes.pi09.n50.bignormal.data.rds
-|           |-- mousezeiselbrain.pergene.pi05.n50.bignormal.data.rds
-|           |-- mousezeiselbrain.pergene.pi09.n50.bignormal.data.rds
+|           |-- mousezeiselbrain.allgenes.filter01.pi05.n50.bignormal.data.rds
+|           |-- mousezeiselbrain.allgenes.filter01.pi09.n50.bignormal.data.rds
+|           |-- mousezeiselbrain.pergene.filter01.pi05.n50.bignormal.data.rds
+|           |-- mousezeiselbrain.pergene.filter01.pi09.n50.bignormal.data.rds
 |       |-- humantungipsc/
-|           |-- humantungipsc.allgenes.pi05.n50.bignormal.data.rds
-|           |-- humantungipsc.allgenes.pi09.n50.bignormal.data.rds
-|           |-- humantungipsc.pergene.pi05.n50.bignormal.data.rds
-|           |-- humantungipsc.pergene.pi09.n50.bignormal.data.rds
+|           |-- humantungipsc.allgenes.filter01.pi05.n50.bignormal.data.rds
+|           |-- humantungipsc.allgenes.filter01.pi09.n50.bignormal.data.rds
+|           |-- humantungipsc.pergene.filter01.pi05.n50.bignormal.data.rds
+|           |-- humantungipsc.pergene.filter01.pi09.n50.bignormal.data.rds
 |       |-- mousekleinesc/
-|           |-- mousekleinesc.allgenes.pi05.n50.bignormal.data.rds
-|           |-- mousekleinesc.allgenes.pi09.n50.bignormal.data.rds
-|           |-- mousekleinesc.pergene.pi05.n50.bignormal.data.rds
-|           |-- mousekleinesc.pergene.pi09.n50.bignormal.data.rds
+|           |-- mousekleinesc.allgenes.filter01.pi05.n50.bignormal.data.rds
+|           |-- mousekleinesc.allgenes.filter01.pi09.n50.bignormal.data.rds
+|           |-- mousekleinesc.pergene.filter01.pi05.n50.bignormal.data.rds
+|           |-- mousekleinesc.pergene.filter01.pi09.n50.bignormal.data.rds
+|       |-- gtex001/
+|           |-- gtex001.allgenes.filter01.pi05.n50.bignormal.data.rds
+|           |-- gtex001.allgenes.filter01.pi09.n50.bignormal.data.rds
+|           |-- gtex001.pergene.filter01.pi05.n50.bignormal.data.rds
+|           |-- gtex001.pergene.filter01.pi09.n50.bignormal.data.rds
+
 
 
 

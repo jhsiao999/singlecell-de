@@ -115,6 +115,38 @@ saveRDS(exprs(eset_filtered),
 ```
 
 
+## GTEx
+
+```{r, eval = FALSE}
+library(data.table)
+gtex <- data.frame(fread("../data/cis_gene_expression.txt"))
+rownames(gtex) <- gtex[,2]
+gtex <- gtex[,-c(1:2)]
+
+
+# Extract liver data
+tissue_labels <- data.frame(fread("../data/samples-id-for-paper.txt"))
+liver_count <- gtex[,tissue_labels$SMTSD == "Liver"]
+dim(liver_count)
+
+# remove mitochrondrial genes
+gene_symbols <- sapply(rownames(gtex), function(x) strsplit(x, split=".", fixed = TRUE)[[1]][1])
+mito <- readRDS("../data/mitogenes.human.rds")
+which_notmito <- which(!gene_symbols %in% as.character(mito$EnsemblGeneID) )
+
+# make filtered dataset
+gtex_filtered <- liver_count[which_notmito, ]
+saveRDS(gtex_filtered, file = "../data/gtex.rds")
+
+# thinning expression data
+liver_thin001 <- apply(t(gtex_filtered), 1, function(x) rbinom(rep(1, length(x)), x, 0.001))
+liver_thin01 <- apply(t(gtex_filtered), 1, function(x) rbinom(rep(1, length(x)), x, 0.01))
+
+saveRDS(liver_thin001, file = "../data/gtex001.rds")
+saveRDS(liver_thin01, file = "../data/gtex01.rds")
+```
+
+
 ---
 
 ## Session information

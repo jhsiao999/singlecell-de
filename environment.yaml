@@ -21,12 +21,13 @@
 # https://anaconda.org/jdblischak/repo
 #
 # Tips:
-# 1. Create custom channels in anaconda. The purpose of doing this is to 
+# 1. Create custom channels in anaconda. The purpose of doing this is to
 #    maintain a stable release of all software packages used in this project.
-# 
-# 
+#
+#
 name: de
 channels:
+  - jdblischak
   - bioconda
   - conda-forge
   - defaults
@@ -35,8 +36,6 @@ channels:
 dependencies:
   - bioconductor-biobase
   - bioconductor-biomart
-  - bioconductor-edger 
+  - bioconductor-edger
   - bioconductor-limma
   - bioconductor-scater
-
-

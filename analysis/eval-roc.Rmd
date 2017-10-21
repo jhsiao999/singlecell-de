@@ -1,0 +1,57 @@
+---
+title: "Some ROC results"
+output: html_document
+---
+
+**Last updated:** `r Sys.Date()`
+
+
+```{r, echo = FALSE}
+knitr::read_chunk("chunks.r")
+#**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+---
+
+## Background and objectives
+
+Results based on 20 simulations and beta simulated from a normal distribution with mean 0 and standard deviation .8.
+
+---
+
+## Load data and packages
+
+```{r}
+fls <- list.files("../output_rocavg/mousezeiselbrain/", full.names = TRUE)
+res <- do.call(rbind, lapply(1:length(fls), function(index) {
+  fl <- fls[index]
+  tmp <- readRDS(fl)
+  labels <- strsplit(fl, split = ".", fixed = TRUE)[[1]]
+  tmp$pi0 <- labels[5]
+  tmp$nsam <- labels[6]
+  tmp$perm_method <- labels[4]
+  tmp$sig_dist <- labels[7]
+  return(tmp)
+}) )
+saveRDS(res, file = "../output_rocsummary/mousezeiselbrain.rds")
+```
+
+
+```{r}
+library(ggplot2)
+ggplot(data=res, mapping = aes(x = FPR, y = TPR, colour = methodsMeanExpression)) +
+  geom_path() +
+  facet_grid(perm_method + pi0 ~ methodsNormalize)
+```
+
+---
+
+## Session information
+
+```{r, echo = FALSE}
+sessionInfo()
+```
+

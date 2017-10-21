@@ -3,8 +3,9 @@
 #SBATCH --time=36:00:00
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=joycehsiao@uchicago.edu
-#SBATCH --mem=15G
 #SBATCH --partition=broadwl
+#SBATCH --ntasks=16
+#SBATCH --mem-per-cpu=8GB
 
 set -e
 

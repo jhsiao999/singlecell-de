@@ -13,7 +13,14 @@ biocLite()
 biocLite(c("Biobase", "edgeR", "DESeq2", "limma", "SCnorm",
            "scran", "BPSC", "monocle", "ROTS", "scde", "MAST"))
 
-# note that scde depends on an earlier version of flexmix (2.13.*)
+# scde:
+#  There were issues installing scde current release
+#  need to install scde1.99.2 along with an earlier version of flexmix (2.13-13)
+#  link address to scde1.99.2:; https://github.com/hms-dbmi/scde/archive/1.99.2.tar.gz
+#  require(devtools)
+#  install_version("flexmix", version = "2.3-13", repos = "http://cran.us.r-project.org")
+
+# scran:
 # this version of scran is dependent on singleCellExperiment objects
 # introduced by scater 1.5
 # since Bioc 3.5 has scater 1.4, we hold off on running scran
