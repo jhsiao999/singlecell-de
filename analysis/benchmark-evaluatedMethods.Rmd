@@ -1,0 +1,193 @@
+---
+title: "Evaluated methods"
+output: html_document
+---
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
+
+```{r, echo = FALSE}
+knitr::read_chunk("chunks.r")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+---
+
+
+
+## Differential expression methods
+
+We evaluated the methods that have been described in peer-reviewed papers. This list does not include Monocole and Seurat (which are included in Sonesen and Robinson 2017).
+
+Bulk RNA-seq | Model Input  | Default normalization                   | Pseudo-count 
+------------ | ------------ | --------------------------------------- | -------------
+edgeR        | Count        | Weighted trimmed mean of M-values (TMM) | None
+DESeq2       | Count        | Median ratio (MR)                       | None
+limmaVoom    | log2 counts  | Counts per million (CPM)                | 1
+
+
+Single-cell  | Model Input  | Default normalization     | Pseudo-count
+------------ | ------------ |-------------------------- | ------------------------
+BPSC         | Count        | CPM or FPKM recommended   | None
+MAST         | log2 counts  | CPM recommended           | Adaptive thresholding
+ROTS         | Count        | Normalization recommended | None
+SCDE         | Count        | RPM recommended           | None
+
+
+1. D3E may need to be included later. It's a python-based software.
+
+2. limmaVoom is the only method that explicity applies pseudo-count. MAST is another log-count based method, which models expression as a two-part process generating "non-drop-outs" and "drop-outs" - the cutoff is decided arbitrarily.
+
+
+
+## Experimental design
+
+Extracted from: https://github.com/hms-dbmi/scw/blob/d57755ca045260e9368540850854dd11ef2fa834/scw2016/tutorials/batcheffects/Hicks.Rmd
+
+
+Potential limiting factors in experimental design
+
+1. Protocols to isolate cells
+2. Protocols to extract mRNA from isolated cells
+3. Protocols for extracting RNA from isolated cells and convert to cDNA
+4. Choice of sequencing platform, time and budge
+5. Choice to use spike-in controls or unique molecular identifiers
+    * Spike-ins sometimes can take a large percentage of "read landscape" in sequencing
+    * UMIs can remove amplification bias, but are 5' or 3' end bias and hence can't be used for 
+      isoform or allele-specific expression
+      
+
+
+## Normalization methods
+
+A. Bulk RNA-seq literature in the past decade has established the need for    
+
+  1. Within-sample normalization to adjust for GC content and transcript length,     
+
+  2. Between-sample normalization to adjust for differences in sampling depth
+
+B. The bulk RNA-seq normalization methods don't work so well for single-cell RNA-seq data (?), especially for datasets with many zeros and also with data with highly variable genes (there's this paper that says that bulk normalization methods don't work well when there are a lot of DE genes, which one?). 
+
+C. The single-cell protocols can be described in these general steps:
+    1. Cell lysis
+    2. Reverse transcription
+    3. PCR amplification
+    4. Dilution
+    
+D. In terms of protocol, does single cell protocol introduce additional sources of variation? Perhaps, it is inherent cell-to-cell variation in total mRNA content?
+    
+E. Description of existing methods
+
+Between-sample normalization
+
+Evaluated methods   | Typical use for     | Spike-in control
+------------------- | ------------------- | -----------------
+Counts-per-million  | bulk RNA-seq        | NA
+TMM                 | bulk RNA-seq        | NA
+RLE (DESeq)         | bulk RNA-seq        | NA
+SCnorm              | single-cell RNA-seq | Not required, but included an option.
+Scran               | single-cell RNA-seq | Not required, but included an option.
+BASiCs              | single-cell RNA-seq | Required
+Census              | single-cell RNA-seq | Not required, but included an option.
+
+Within-sample normalization
+
+Evaluted methods |
+---------------- | ---
+TPM              |
+FPKM             |
+RPKM             |
+
+
+Notes.
+
+1. The first step in analyzing CPM - adjust for between sample differences in library size
+TMM, MR : adjust for variation in library size due to differences in gene expression distribution
+
+2. SCnorm : count-read relationship within each biological condition, then normalize again across the two conditions using a different procedure (see function scaleNormMultCont)
+
+3. RLE: this method requires the imputation of pseudocount. 
+
+4. scran: this method has an option for large cell size. In this case, cells are clustered and cells with similar gene expression profiles are clustered together forming a pseudo-cell for computing library size normalization factor.
+
+  - **Some questions to ask**:
+
+  a. Which methods work with TPM and which work with CPM? 
+  b. Can we get TPM with UMI data?? Well no because we don't get complete transcripts... so can't do TPM for UMI data. UMI is not recommened in consensus and SCnorm. (How about scran?) Hence spike-in is recommended in both SCnorm and census...
+  c. Correlation between transcript count and UMI count? correlation between 5'UTR region length or start position and UMI count?? How about other known factors that affect expression variation within sample and between genes?
+  d. How do these methods deal with zeros when computing the scale factors?
+  e. How do we evaluate normalization methods? Perhaps some of these new single-cell normalization methods work as well for thinned GTEx data, implying that it's a low coverage issue...
+  
+About FPKM, RPKM and TPM: "These methods are not applicable to our dataset since the end of the transcript which contains the UMI was preferentially sequenced. Furthermore in general these should only be calculated using appropriate quantification software from aligned BAM files not from read counts since often only a portion of the entire gene/transcript is sequenced, not the entire length. If in doubt check for a relationship between gene/transcript length and expression level." (extracted from hemberg-lab.github.io)
+
+
+
+F. Implementation details
+
+  1. edgeR: 
+    a. libsize <- libsize*libsize_factor
+    b. y <- t(log2(t(counts + 0.5)/(lib.size + 1) * 1e+06))
+    the default is to compute the normalized counts (cpm) using a library-size adjusted prior count
+    c. only output the size factor
+
+  2. scran
+    a. So many bells and wissles in these methods... difficult to replicate the results outside of the package... even if the implementation is not model-based...
+    b. one thing I can be sure is that the normalized expression variables is computed the same as in edgeR, but with a different prior.count (possibly also library size adjusted as in edgeR) and its own library size normalization factor
+    c. since it's a scaling method, I chose to output just the size factor...
+
+  3. Other practical concerns:
+    a. I prefer to not use the normalized expression outputted from each method, since I haven't been able to locate the code for computing the normalized counts.
+    b. Goal is to get size factors and then compare these scale factors. The only methods that have different scale factors between genes is SCnorm and perhaps BASiCs (?).
+    c. Note that SCnorm, Scran, BASiCs and Census all provide tools for computing size factors using spike-in control genes. In my implementation, I ignore the spike-in option. 
+    d. For census, can we recover normalized count outputted by census using its size facrors? that is, are the scale factors same for every gene? Or maybe they estimated size factors to be the same for every gene afterwards.
+
+
+## Filtering and QC
+
+I like Po's model-based approach to filtering. This has not been done yet in the literature...
+
+Many things that can be done... but for now, I'll use the simple rule of including samples/features detected as expressed. At least to keep the filtering criteria consistent across datasets and evaluated methods.
+
+A. Feature-level
+
+Genes expressed in at least X percent of cells
+
+For UMI data, should we correct for collison?
+
+B. Sample-level 
+
+Gene expression range as expected by the range of ERCC - within-sample variation is expected to be the same between endogeneous genes and ERCC genes
+
+Can we use spike-in variation to predict endogeneous gene variation?
+
+Percent features expressed in spike-in is greater than percent features expressed in endogeneous
+
+what if no spike-in? between-feature variation?
+
+cell variation and coverage?
+
+proportion of genes experssed
+
+total mRNA recovery - library size
+
+
+
+C. Existing QC pipelines
+
+scater
+
+
+
+## Pseudo-count
+
+edgeR uses a moderated prior count (moderated because it's depended on library size)
+
+in voom/edgeR/limma, pseudocount is added after normalizing sample depth
+
+
+
+
+

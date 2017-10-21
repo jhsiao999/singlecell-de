@@ -1,15 +1,36 @@
 ---
-title: "Home"
-output:
-  html_document:
-    toc: false
+title: "Benchmarking DE methods"
+output: html_document
 ---
 
-The goal of this new template is to simplify the setup and maintenance of a research website.
-Specifically,
+**Last updated:** `r Sys.Date()`
 
-*  Easier to build and extend the website using the new tools in the [rmarkdown][] package and [latest RStudio release][rstudio]
-*  Easier to deploy the website with Git and GitHub by only using one branch
+**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
-[rmarkdown]: http://rmarkdown.rstudio.com/rmarkdown_websites.htm
-[rstudio]: https://www.rstudio.com/products/rstudio/download/preview/
+```{r, echo = FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+knitr::opts_chunk(message = FALSE)
+```
+
+---
+
+[ashbun](https://github.com/jhsiao999/ashbun) implements the simulation and evaluation in this benchmark project. 
+
+1. [Datasets](benchmark-dataset.html)
+    * [Preprocess data](data-preprocess.html)
+    
+2. [Simulation strategies](benchmark-simulation.html)
+
+3. [Evaluated methods](benchmark-evaluatedMethods.html)
+
+4. [Evaluation criteria](benchmark-criteria.html)
+
+5. [Analysis](benchmark-analysis.html)
+
+6. [FDR](benchmark-analysis-fdr.html)
+
+
+

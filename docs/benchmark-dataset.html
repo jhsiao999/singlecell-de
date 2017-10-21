@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Experimental datasets</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">singlecell-de</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Experimental datasets</h1>
+
+</div>
+
+
+<p><strong>Last updated:</strong> 2017-10-19</p>
+<p><strong>Code version:</strong> 861184a54d0981caa0791fd3a31ddee6995fa00b</p>
+<hr />
+<div id="datasets" class="section level2">
+<h2>Datasets</h2>
+<p><em>UMI count data</em></p>
+<table>
+<thead>
+<tr class="header">
+<th>Study</th>
+<th>Organism</th>
+<th>Protocol</th>
+<th>UMI</th>
+<th>Spike-in</th>
+<th>Cell type</th>
+<th>No. cells</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Jaitin et al. (2014)</td>
+<td>Mouse</td>
+<td>MARS-Seq</td>
+<td>Y</td>
+<td>ERCC</td>
+<td>Spleen</td>
+<td>~4,500</td>
+</tr>
+<tr class="even">
+<td>Zeisel et al. (2015)</td>
+<td>Mouse</td>
+<td>STRT-Seq, C1</td>
+<td>Y</td>
+<td>ERCC</td>
+<td>Brain</td>
+<td>3,005</td>
+</tr>
+<tr class="odd">
+<td>Tung et al., (2016)</td>
+<td>Human</td>
+<td>SMART-Seq, C1</td>
+<td>Y</td>
+<td>ERCC</td>
+<td>iPSC</td>
+</tr>
+<tr class="even">
+<td>Klein et al. (2015)</td>
+<td>Mouse</td>
+<td>inDrop</td>
+<td>Y</td>
+<td>Y</td>
+<td>ESC</td>
+<td>2,717</td>
+</tr>
+</tbody>
+</table>
+<p><em>Read count data</em></p>
+<table>
+<thead>
+<tr class="header">
+<th>Study</th>
+<th>Organism</th>
+<th>Protocol</th>
+<th>UMI</th>
+<th>Spike-in</th>
+<th>Cell type</th>
+<th>No. cells</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Guo et al. (2015)</td>
+<td>Human</td>
+<td>Tang et al. (2009)</td>
+<td>N</td>
+<td>ERCC</td>
+<td>PGC</td>
+<td>328</td>
+</tr>
+<tr class="even">
+<td>Engel et al. (2016)</td>
+<td>Mouse</td>
+<td>SMART2-Seq+</td>
+<td>N</td>
+<td>N</td>
+<td>Tcell</td>
+<td>203</td>
+</tr>
+<tr class="odd">
+<td>Deng et al. (2014)</td>
+<td>Mouse</td>
+<td>SMART-Seq</td>
+<td>N</td>
+<td>ArrayControl</td>
+<td>ESC</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Kumar et al. (2014)</td>
+<td>Mouse</td>
+<td>SMART-Seq</td>
+<td>N</td>
+<td>N</td>
+<td>ESC</td>
+<td>268</td>
+</tr>
+</tbody>
+</table>
+<p>Notes:<br />
+1. All read count data were downloaded from <a href="http://imlspenticton.uzh.ch:3838/conquer/"><code>Conquer</code></a>.<br />
+2. Smart2-Seq+ was adapted from the original Smart2-Seq protocol.</p>
+<hr />
+</div>
+<div id="descriptions" class="section level2">
+<h2>Descriptions</h2>
+<p><em>UMI count data</em></p>
+<p>Jaitin et al. (2014). Mouse Spleen cells were collected using MARS-Seq. Data were downloaded from NCBI Gene Expression Omnibus accession <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE54006">GSE54006</a>, including processed count data (GSE54006_umitab.txt) and corresponding single cell sample information (GSE54006_experimental_design.txt).</p>
+<p>In the paper, X cell types were identified and etc… A total of XX cells are included. A total of XX endogenous genes and XX ERCC genes. Single cell samples were obtain after FACTs scoring filtering of spleen cells. The authors designed the study to lean the cell types in spleen cells. The Gene specific information: frequency of cells detected. Cell specific information - proportion of genes detected</p>
+<p>Zeisel et al. (2015). Mouse brain cells collected using STRT-Seq. In the experiment, a total of 76 96-well C1 Fluidigm runs were performed, which were then processed to include 3,005 single cells passed quality filtering criteria. Data were downloaded from NCBI Gene Expression Omnibus accession <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE6036">GSE6036</a>, including processed count data (expression_mRNA_17-Aug-2014.txt) and corresponding single cell sample information (GSE60361_C1-3005-Expression).</p>
+<p>In the paper, X cell types were identified and etc…</p>
+<p>Klein et al. (2015). Mouse Embryonic Stem Cells collected by inDrop. We include four of the eight inDrop runs on embryonic stem cells. Data were downloaded from NCBI Gene Expression Omnibus accession [GSE65525](<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE65525" class="uri">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE65525</a> (GSM1599494_ES_d0_main.csv, GSM1599497_ES_d2_LIFminus.csv, GSM1599498_ES_d4_LIFminus.csv, GSM1599499_ES_d7_LIFminus.csv). These data include unfiltered single cell samples and genes filtered for UMI count.</p>
+<p>Tung et al., (2016). Human induced Pluripotent Stem Cells. X single cells were collected from three iPSC cell lines by SMART-Seq. The count data including quality single cells were downloaded from the GitHub repository (molecules-filter.txt, <a href="https://github.com/jdblischak/singleCellSeq" class="uri">https://github.com/jdblischak/singleCellSeq</a>), with the original GEO accession <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE77288">GSE77288</a>.</p>
+<p><em>Read count data</em></p>
+<p>Guo et al. (2015). Human Primordial Germ Cells and Somatic Cells. In the experiment, 242 Primodial Germ Cells and 81 Somatic Cells were collected by the protocol used in Tang et al. (2009). The count data were downloaded from the Conquer portal (<a href="http://imlspenticton.uzh.ch:3838/conquer/" class="uri">http://imlspenticton.uzh.ch:3838/conquer/</a> ) (GSE63818-GPL16791.rds), with the original GEO accession <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE63818">GSE63818</a>.</p>
+<p>Engel et al. (2016). Mouse Natural Killer T cells by SMART2-Seq+. In the experiment, 203 single cells were collected from purified population of thymic Natural Killer T cell subsets (KNT0, NKT1, NKT2, NKT17). The count data were downloaded from the Conquer portal (<a href="http://imlspenticton.uzh.ch:3838/conquer/" class="uri">http://imlspenticton.uzh.ch:3838/conquer/</a> ) (GSE74596.rds), with the original GEO accession <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE74596">GSE74596</a>.</p>
+<p>Deng et al. (2014). Mouse Pre-implantation Embryonic Stem Cells by SMART-Seq. In the experiment, 286 ESCs were collected from single cells were collected from zygote to blastocyst pre-implantation stages. The count data were downloaded from the Conquer portal (<a href="http://imlspenticton.uzh.ch:3838/conquer/" class="uri">http://imlspenticton.uzh.ch:3838/conquer/</a> ) (GSE45719.rds), with the original GEO accession <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE45719">GSE45719</a>.</p>
+<p>Kumar et al. (2014) Mouse Embryonic Stem Cells by SMART-Seq. In the experiment, 417 single cells cultured in different serum conditions were collected. The count data were downloaded from the Conquer portal (<a href="http://imlspenticton.uzh.ch:3838/conquer/" class="uri">http://imlspenticton.uzh.ch:3838/conquer/</a> ) (GSE60749-GPL13112.rds, GSE60749-GPL17021.rds ), with the original GEO accession <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE60749">GSE60749</a>.</p>
+<hr />
+</div>
+<div id="remarks" class="section level2">
+<h2>Remarks</h2>
+<ol style="list-style-type: decimal">
+<li><p>The studies are prioritized by the availabliity of UMI, Spike-in and then processed count data.</p></li>
+<li><p>Concern: In the single cell RNA-seq studies that use experimental data from a complex tissue, the collected single cell samples are usually consisted of multiple cel populations. Should we first cluster the single cell samples and the extract some cell populations for simulated data? Or should we just ignore this fact and take subsamples of cells? Well, it’s not gonna matter for simulation experiments where we permute sample labels for each gene, but it may matter for when we use the same permuted labels across genes.</p></li>
+<li><p>For now, we use conquer-curated data for single-cell RNA-seq studies that did not use UMI. These datasets include all of the single cell samples before quality control filtering.</p></li>
+<li><p>For studies that use UMI, we use the processed count table generated in the original study. Hence, some of these datasets may include single cell samples of higher quality. However, all of the studies include all of the genes that passed mapped reads threshold.</p></li>
+<li><p>In terms of data filtering, the conern is more that if the threshold for low expression is different between studies, since we are mainly interested in different expression analysis. However, filtering criteria for single cell samples are not that big of a concern (unless we care about finding cell populations). Although it is important to note that different filtering criteria may result in different threshold for expression variable…</p></li>
+<li><p>Measurement unit: some of the datasets have both transcript-level count and gene-level count, while some only have gene-level count. Especially for single-cell RNA-seq datasets, most of these are processed count data downloaded from GEO and only have gene-level count data avaiable. However, in order to perform within-sample normalization for transcript length and to apply <code>census</code>, we need the transcript-level information.</p></li>
+</ol>
+<p>TPM versus RPKM and FPKM</p>
+<p>Divide the read counts by the length of each gene in kilobases. This gives you reads per kilobase (RPK). Count up all the RPK values in a sample and divide this number by 1,000,000. This is your “per million” scaling factor.</p>
+<p>Divide the RPK values by the “per million” scaling factor. This gives you TPM.</p>
+</div>
+
+<hr>
+<p>
+    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+</p>
+<hr>
+
+<!-- To enable disqus, uncomment the section below and provide your disqus_shortname -->
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+-->
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+# Snakemake configuration file
+#
+# The variables in this file control the behavior of the Snakefile at the root
+# of the project. It starts with count matrices, generates simulated data
+# for the count matrices, evaluates data using various differential expression
+# methods, and generates evaluation results including power and calibration.
+#
+#
+# Paths ----------------------------------------------------------------------
+#
+# Instructions:
+# 1. The following paths must be updated to run the scripts on your machine
+# 2. Paths must end with forward slash
+#
+# Enter the absolute path to the singlcell-de directory
+ dir_proj: /project2/gilad/joycehsiao/singlecell-de/
+
+# Enter the absolute path to a scratch directory for writing intermediate files
+scratch: /scratch/midway2/joycehsiao/
+
+# Enter the path (absolute or relative to the Snakefile) for writing log
+# files. Make sure to also up date this path for log files in cluster.json
+dir_log: log/
+
