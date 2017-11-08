@@ -10,4 +10,4 @@ analysis/*html
 analysis/*_cache
 output/*
 output*/
-
+*gz
