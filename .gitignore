@@ -10,3 +10,4 @@ analysis/*html
 analysis/*_cache
 output*/
 *.gz
+slides/
