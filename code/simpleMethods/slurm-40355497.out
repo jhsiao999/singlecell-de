@@ -1,0 +1,11 @@
+Argument 1: /project2/gilad/joycehsiao/singlecell-de/output_eval/gtex01/
+Argument 2: /project2/gilad/joycehsiao/singlecell-de/output_rocavg/gtex01/
+Argument 3: gtex01
+gtex01 , allgenes , pi0= 0.5 , 40 samples/condition 
+
+gtex01 , allgenes , pi0= 0.9 , 40 samples/condition 
+
+gtex01 , pergene , pi0= 0.5 , 40 samples/condition 
+
+gtex01 , pergene , pi0= 0.9 , 40 samples/condition 
+

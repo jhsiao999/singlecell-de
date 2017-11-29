@@ -1,0 +1,11 @@
+Argument 1: /project2/gilad/joycehsiao/singlecell-de/output_eval/mousekleinesc/
+Argument 2: /project2/gilad/joycehsiao/singlecell-de/output_rocavg/mousekleinesc/
+Argument 3: mousekleinesc
+mousekleinesc , allgenes , pi0= 0.5 , 40 samples/condition 
+
+mousekleinesc , allgenes , pi0= 0.9 , 40 samples/condition 
+
+mousekleinesc , pergene , pi0= 0.5 , 40 samples/condition 
+
+mousekleinesc , pergene , pi0= 0.9 , 40 samples/condition 
+

@@ -5,14 +5,13 @@ output: html_document
 
 **Last updated:** `r Sys.Date()`
 
-**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
-
 ```{r, echo = FALSE}
-knitr::read_chunk("chunks.r")
+knitr::read_chunk("chunks.R")
 ```
 
 ```{r knitr-opts-chunk, include=FALSE}
 ```
+
 
 ---
 
@@ -26,7 +25,9 @@ Preprocess data for simulation
 
 ---
 
-## MouseZeiselBrain
+## UMI protcols
+
+### MouseZeiselBrain
 
 ```{r, eval = FALSE}
 library(singleCellRNASeqMouseZeiselBrain)
@@ -55,7 +56,7 @@ saveRDS(exprs(eset_filtered),
         file = "../data/mousezeiselbrain.rds")
 ```
 
-## MouseKleinESC
+### MouseKleinESC
 
 ```{r, eval = FALSE}
 library(singleCellRNASeqMouseKleinESC)
@@ -63,21 +64,25 @@ eset <- get(data(MouseKleinESC))
 ngenes <- nrow(eset)
 nsamples <- ncol(eset)
 
+# take samples from day 0 and day 7 of differentiation
+daysToKeep <- which(pData(eset)$day == 0 |  pData(eset)$day == 7)
+eset_tmp <- eset[,daysToKeep]
+
 # remove genes/samples with zero count
-ii_genes_allzero <- rowSums(exprs(eset) == 0) == ngenes
-ii_samples_allzero <- colSums(exprs(eset) == 0) == nsamples
+ii_genes_allzero <- rowSums(exprs(eset_tmp) == 0) == ngenes
+ii_samples_allzero <- colSums(exprs(eset_tmp) == 0) == nrow(eset_tmp)
 table(ii_genes_allzero)
 table(ii_samples_allzero)
 
 # remove spike-in control genes
-which_genes_control <- grep("ERCC", rownames(exprs(eset)))
+which_genes_control <- grep("ERCC", rownames(exprs(eset_tmp)))
 
 # remove mitochrondrial genes
 mito <- readRDS("../data/mitogenes.mouse.rds")
-which_notmito <- which(!(rownames(exprs(eset)) %in% as.character(mito$Symbol)))
+which_notmito <- which(!(rownames(exprs(eset_tmp)) %in% as.character(mito$Symbol)))
 
 # make filtered dataset
-eset_filtered <- eset[which_notmito, ]
+eset_filtered <- eset_tmp[which_notmito, ]
 
 # save to rds
 saveRDS(exprs(eset_filtered), 
@@ -85,7 +90,7 @@ saveRDS(exprs(eset_filtered),
 ```
 
 
-## HumanTungiPSC
+### HumanTungiPSC
 
 ```{r, eval = FALSE}
 library(singleCellRNASeqHumanTungiPSC)
@@ -114,38 +119,85 @@ saveRDS(exprs(eset_filtered),
         file = "../data/humantungipsc.rds")
 ```
 
+---
 
-## GTEx
+## Full-length protocols
+
+### Mouse Engel T cell
+
+Take NKT0 and NKT17 cells.
 
 ```{r, eval = FALSE}
-library(data.table)
-gtex <- data.frame(fread("../data/cis_gene_expression.txt"))
-rownames(gtex) <- gtex[,2]
-gtex <- gtex[,-c(1:2)]
+library(singleCellRNASeqMouseEngelTcell)
+eset <- conquer_eset
+ngenes <- nrow(eset)
+nsamples <- ncol(eset)
 
+# take NKT0 and NKT17
+celltypesToKeep <- (pData(eset)$cell_type == "NKT0") | (pData(eset)$cell_type == "NKT17")
+eset_tmp <- eset[,celltypesToKeep]
 
-# Extract liver data
-tissue_labels <- data.frame(fread("../data/samples-id-for-paper.txt"))
-liver_count <- gtex[,tissue_labels$SMTSD == "Liver"]
-dim(liver_count)
+# check and remove genes/samples with zero count
+# no genes with all zeros or samples with all zeros
+ii_genes_allzero <- rowSums(exprs(eset_tmp) == 0) == ngenes
+ii_samples_allzero <- colSums(exprs(eset_tmp) == 0) == nsamples
+table(ii_genes_allzero)
+table(ii_samples_allzero)
+
+# remove spike-in control genes
+which_genes_notcontrol <- grep("ERCC", rownames(exprs(eset_tmp)), invert = TRUE)
 
 # remove mitochrondrial genes
-gene_symbols <- sapply(rownames(gtex), function(x) strsplit(x, split=".", fixed = TRUE)[[1]][1])
-mito <- readRDS("../data/mitogenes.human.rds")
-which_notmito <- which(!gene_symbols %in% as.character(mito$EnsemblGeneID) )
+mito <- readRDS("../data/mitogenes.mouse.rds")
+which_notmito <- which(!(rownames(exprs(eset_tmp)) %in% as.character(mito$Symbol)))
 
 # make filtered dataset
-gtex_filtered <- liver_count[which_notmito, ]
-saveRDS(gtex_filtered, file = "../data/gtex.rds")
+eset_filtered <- eset_tmp[unique(which_genes_notcontrol, which_notmito), ]
 
-# thinning expression data
-liver_thin001 <- apply(t(gtex_filtered), 1, function(x) rbinom(rep(1, length(x)), x, 0.001))
-liver_thin01 <- apply(t(gtex_filtered), 1, function(x) rbinom(rep(1, length(x)), x, 0.01))
-
-saveRDS(liver_thin001, file = "../data/gtex001.rds")
-saveRDS(liver_thin01, file = "../data/gtex01.rds")
+# round up the estimated counts
+exprs(eset_filtered) <- round(exprs(eset_filtered))
+# save to rds
+saveRDS(exprs(eset_filtered), 
+        file = "../data/mouseengeltcell.rds")
 ```
 
+
+
+### Shalek Mouse 
+
+TBD
+
+```{r, eval = FALSE}
+library(singleCellRNASeqMouseEngelTcell)
+eset <- conquer_eset
+ngenes <- nrow(eset)
+nsamples <- ncol(eset)
+
+# take NKT0 and NKT17
+celltypesToKeep <- (pData(eset)$cell_type == "NKT0") | (pData(eset)$cell_type == "NKT17")
+eset_tmp <- eset[,celltypesToKeep]
+
+# check and remove genes/samples with zero count
+# no genes with all zeros or samples with all zeros
+ii_genes_allzero <- rowSums(exprs(eset_tmp) == 0) == ngenes
+ii_samples_allzero <- colSums(exprs(eset_tmp) == 0) == nsamples
+table(ii_genes_allzero)
+table(ii_samples_allzero)
+
+# remove spike-in control genes
+which_genes_notcontrol <- grep("ERCC", rownames(exprs(eset_tmp)), invert = TRUE)
+
+# remove mitochrondrial genes
+mito <- readRDS("../data/mitogenes.mouse.rds")
+which_notmito <- which(!(rownames(exprs(eset_tmp)) %in% as.character(mito$Symbol)))
+
+# make filtered dataset
+eset_filtered <- eset_tmp[unique(which_genes_notcontrol, which_notmito), ]
+
+# save to rds
+saveRDS(exprs(eset_filtered), 
+        file = "../data/mouseengeltcell.rds")
+```
 
 ---
 
@@ -154,4 +206,5 @@ saveRDS(liver_thin01, file = "../data/gtex01.rds")
 ```{r, echo = FALSE}
 sessionInfo()
 ```
+
 

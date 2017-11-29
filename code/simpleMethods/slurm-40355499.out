@@ -1,0 +1,11 @@
+Argument 1: /project2/gilad/joycehsiao/singlecell-de/output_eval/mouseengeltcell/
+Argument 2: /project2/gilad/joycehsiao/singlecell-de/output_rocavg/mouseengeltcell/
+Argument 3: mouseengeltcell
+mouseengeltcell , allgenes , pi0= 0.5 , 40 samples/condition 
+
+mouseengeltcell , allgenes , pi0= 0.9 , 40 samples/condition 
+
+mouseengeltcell , pergene , pi0= 0.5 , 40 samples/condition 
+
+mouseengeltcell , pergene , pi0= 0.9 , 40 samples/condition 
+

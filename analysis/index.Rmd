@@ -5,10 +5,10 @@ output: html_document
 
 **Last updated:** `r Sys.Date()`
 
-**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
 ```{r, echo = FALSE}
 knitr::read_chunk("chunks.R")
+#**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 ```
 
 ```{r knitr-opts-chunk, include=FALSE}
@@ -17,21 +17,15 @@ knitr::opts_chunk(message = FALSE)
 
 ---
 
-[ashbun](https://github.com/jhsiao999/ashbun) implements the simulation and evaluation in this benchmark project. 
+[ashbun](https://github.com/jhsiao999/ashbun) implements the simulation and evaluation in this benchmark project.
 
-1. [Datasets](benchmark-dataset.html)
-    * [Preprocess data](data-preprocess.html)
-    
-2. [Simulation strategies](benchmark-simulation.html)
 
-3. [Evaluated methods](benchmark-evaluatedMethods.html)
+* [Listing of experimental datasets](benchmark-dataset.html)
+* [Preprocess experimental datasets](data-preprocess.html)
 
-4. [Evaluation criteria](benchmark-criteria.html)
+* [Listing of evaluated methods](benchmark-evaluatedMethods.html)
 
-5. [Analysis](benchmark-analysis.html)
-  
-6. Results
-    * [mousezeiselbrain roc](eval-roc.html)
-  
+* Results
+    * [Compare methods on genes with varying expression levels](analysis-highexpression.html)
 
 

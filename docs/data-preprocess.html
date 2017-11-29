@@ -305,8 +305,7 @@ div.tocify {
 </div>
 
 
-<p><strong>Last updated:</strong> 2017-10-19</p>
-<p><strong>Code version:</strong> 861184a54d0981caa0791fd3a31ddee6995fa00b</p>
+<p><strong>Last updated:</strong> 2017-11-16</p>
 <hr />
 <div id="background-and-objectives" class="section level2">
 <h2>Background and objectives</h2>
@@ -320,8 +319,10 @@ div.tocify {
 </ol>
 <hr />
 </div>
-<div id="mousezeiselbrain" class="section level2">
-<h2>MouseZeiselBrain</h2>
+<div id="umi-protcols" class="section level2">
+<h2>UMI protcols</h2>
+<div id="mousezeiselbrain" class="section level3">
+<h3>MouseZeiselBrain</h3>
 <pre class="r"><code>library(singleCellRNASeqMouseZeiselBrain)
 eset &lt;- get(data(MouseZeiselBrain))
 ngenes &lt;- nrow(eset)
@@ -347,35 +348,39 @@ eset_filtered &lt;- eset[which_notmito, ]
 saveRDS(exprs(eset_filtered), 
         file = &quot;../data/mousezeiselbrain.rds&quot;)</code></pre>
 </div>
-<div id="mousekleinesc" class="section level2">
-<h2>MouseKleinESC</h2>
+<div id="mousekleinesc" class="section level3">
+<h3>MouseKleinESC</h3>
 <pre class="r"><code>library(singleCellRNASeqMouseKleinESC)
 eset &lt;- get(data(MouseKleinESC))
 ngenes &lt;- nrow(eset)
 nsamples &lt;- ncol(eset)
 
+# take samples from day 0 and day 7 of differentiation
+daysToKeep &lt;- which(pData(eset)$day == 0 |  pData(eset)$day == 7)
+eset_tmp &lt;- eset[,daysToKeep]
+
 # remove genes/samples with zero count
-ii_genes_allzero &lt;- rowSums(exprs(eset) == 0) == ngenes
-ii_samples_allzero &lt;- colSums(exprs(eset) == 0) == nsamples
+ii_genes_allzero &lt;- rowSums(exprs(eset_tmp) == 0) == ngenes
+ii_samples_allzero &lt;- colSums(exprs(eset_tmp) == 0) == nrow(eset_tmp)
 table(ii_genes_allzero)
 table(ii_samples_allzero)
 
 # remove spike-in control genes
-which_genes_control &lt;- grep(&quot;ERCC&quot;, rownames(exprs(eset)))
+which_genes_control &lt;- grep(&quot;ERCC&quot;, rownames(exprs(eset_tmp)))
 
 # remove mitochrondrial genes
 mito &lt;- readRDS(&quot;../data/mitogenes.mouse.rds&quot;)
-which_notmito &lt;- which(!(rownames(exprs(eset)) %in% as.character(mito$Symbol)))
+which_notmito &lt;- which(!(rownames(exprs(eset_tmp)) %in% as.character(mito$Symbol)))
 
 # make filtered dataset
-eset_filtered &lt;- eset[which_notmito, ]
+eset_filtered &lt;- eset_tmp[which_notmito, ]
 
 # save to rds
 saveRDS(exprs(eset_filtered), 
         file = &quot;../data/mousekleinesc.rds&quot;)</code></pre>
 </div>
-<div id="humantungipsc" class="section level2">
-<h2>HumanTungiPSC</h2>
+<div id="humantungipsc" class="section level3">
+<h3>HumanTungiPSC</h3>
 <pre class="r"><code>library(singleCellRNASeqHumanTungiPSC)
 eset &lt;- get(data(HumanTungiPSC))
 ngenes &lt;- nrow(eset)
@@ -402,18 +407,95 @@ saveRDS(exprs(eset_filtered),
         file = &quot;../data/humantungipsc.rds&quot;)</code></pre>
 <hr />
 </div>
+</div>
+<div id="full-length-protocols" class="section level2">
+<h2>Full-length protocols</h2>
+<div id="mouse-engel-t-cell" class="section level3">
+<h3>Mouse Engel T cell</h3>
+<p>Take NKT0 and NKT17 cells.</p>
+<pre class="r"><code>library(singleCellRNASeqMouseEngelTcell)
+eset &lt;- conquer_eset
+ngenes &lt;- nrow(eset)
+nsamples &lt;- ncol(eset)
+
+# take NKT0 and NKT17
+celltypesToKeep &lt;- (pData(eset)$cell_type == &quot;NKT0&quot;) | (pData(eset)$cell_type == &quot;NKT17&quot;)
+eset_tmp &lt;- eset[,celltypesToKeep]
+
+# check and remove genes/samples with zero count
+# no genes with all zeros or samples with all zeros
+ii_genes_allzero &lt;- rowSums(exprs(eset_tmp) == 0) == ngenes
+ii_samples_allzero &lt;- colSums(exprs(eset_tmp) == 0) == nsamples
+table(ii_genes_allzero)
+table(ii_samples_allzero)
+
+# remove spike-in control genes
+which_genes_notcontrol &lt;- grep(&quot;ERCC&quot;, rownames(exprs(eset_tmp)), invert = TRUE)
+
+# remove mitochrondrial genes
+mito &lt;- readRDS(&quot;../data/mitogenes.mouse.rds&quot;)
+which_notmito &lt;- which(!(rownames(exprs(eset_tmp)) %in% as.character(mito$Symbol)))
+
+# make filtered dataset
+eset_filtered &lt;- eset_tmp[unique(which_genes_notcontrol, which_notmito), ]
+
+# round up the estimated counts
+exprs(eset_filtered) &lt;- round(exprs(eset_filtered))
+# save to rds
+saveRDS(exprs(eset_filtered), 
+        file = &quot;../data/mouseengeltcell.rds&quot;)</code></pre>
+</div>
+<div id="shalek-mouse" class="section level3">
+<h3>Shalek Mouse</h3>
+<p>TBD</p>
+<pre class="r"><code>library(singleCellRNASeqMouseEngelTcell)
+eset &lt;- conquer_eset
+ngenes &lt;- nrow(eset)
+nsamples &lt;- ncol(eset)
+
+# take NKT0 and NKT17
+celltypesToKeep &lt;- (pData(eset)$cell_type == &quot;NKT0&quot;) | (pData(eset)$cell_type == &quot;NKT17&quot;)
+eset_tmp &lt;- eset[,celltypesToKeep]
+
+# check and remove genes/samples with zero count
+# no genes with all zeros or samples with all zeros
+ii_genes_allzero &lt;- rowSums(exprs(eset_tmp) == 0) == ngenes
+ii_samples_allzero &lt;- colSums(exprs(eset_tmp) == 0) == nsamples
+table(ii_genes_allzero)
+table(ii_samples_allzero)
+
+# remove spike-in control genes
+which_genes_notcontrol &lt;- grep(&quot;ERCC&quot;, rownames(exprs(eset_tmp)), invert = TRUE)
+
+# remove mitochrondrial genes
+mito &lt;- readRDS(&quot;../data/mitogenes.mouse.rds&quot;)
+which_notmito &lt;- which(!(rownames(exprs(eset_tmp)) %in% as.character(mito$Symbol)))
+
+# make filtered dataset
+eset_filtered &lt;- eset_tmp[unique(which_genes_notcontrol, which_notmito), ]
+
+# save to rds
+saveRDS(exprs(eset_filtered), 
+        file = &quot;../data/mouseengeltcell.rds&quot;)</code></pre>
+<hr />
+</div>
+</div>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
 <pre><code>R version 3.4.1 (2017-06-30)
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
-Running under: macOS High Sierra 10.13
+Platform: x86_64-redhat-linux-gnu (64-bit)
+Running under: Scientific Linux 7.2 (Nitrogen)
 
 Matrix products: default
-BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
-LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
+BLAS/LAPACK: /usr/lib64/R/lib/libRblas.so
 
 locale:
-[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     

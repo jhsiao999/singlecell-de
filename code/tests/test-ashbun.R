@@ -56,6 +56,7 @@ output  <- query.evaluation(counts = simdata$counts,
 
 Run on 5 simulated data.
 
+```{r}
 simdata_list <- simulationWrapper(counts, Nsim = 5,
                                   Ngenes = 1000,
                                   Nsamples = 50,
@@ -79,18 +80,18 @@ for (index in 1:length(eval_output)) {
 roc_combined <- do.call(rbind, lapply(output, "[[", 2))
 roc_average <- do.call(rbind, lapply(1:nlevels(roc_combined$methodsNormalize),
                                      function(index_methodsNormalize) {
-foo2 <-
- do.call(rbind, lapply(1:nlevels(roc_combined$methodsMeanExpression),
-                       function(index_methodsMeanExpression) {
-                         roc_combined_subset <- subset(roc_combined,
-                                                       subset = methodsMeanExpression %in% methodsMeanExpression[index_methodsMeanExpression] & methodsNormalize %in% methodsNormalize[index_methodsNormalize] )
-                         foo <- getROC.average(roc_combined_subset)
-                         foo$methodsMeanExpression <- unique(methodsMeanExpression[index_methodsMeanExpression])
-                         return(foo)
-                       }) )
-foo2$methodsNormalize <- unique(methodsNormalize[index_methodsNormalize])
-return(foo2)
-}) )
+                                       foo2 <-
+                                         do.call(rbind, lapply(1:nlevels(roc_combined$methodsMeanExpression),
+                                                               function(index_methodsMeanExpression) {
+                                                                 roc_combined_subset <- subset(roc_combined,
+                                                                                               subset = methodsMeanExpression %in% methodsMeanExpression[index_methodsMeanExpression] & methodsNormalize %in% methodsNormalize[index_methodsNormalize] )
+                                                                 foo <- getROC.average(roc_combined_subset)
+                                                                 foo$methodsMeanExpression <- unique(methodsMeanExpression[index_methodsMeanExpression])
+                                                                 return(foo)
+                                                               }) )
+                                       foo2$methodsNormalize <- unique(methodsNormalize[index_methodsNormalize])
+                                       return(foo2)
+                                     }) )
 
 
 library(ggplot2)

@@ -12,3 +12,4 @@ analysis/*_cache
 output*/
 *.gz
 slides/
+*.rds
